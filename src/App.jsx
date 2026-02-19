@@ -1,16 +1,36 @@
-// src/App.jsx
 import { useEffect, useState } from 'react'
 import './App.css'
 import GamePlaytimeList from './components/games/GamePlaytimeList'
-import UserProfile from './components/profile/UserProfile' // New component
+import UserProfile from './components/profile/UserProfile'
+import NavBar from './components/nav/NavBar'
+import GameRandomizer from './components/games/GameRandomizer'
 
 function App() {
+  const TABS = [
+    {
+        name: 'Inventory',
+    },
+    {
+        name: 'Achievements'
+    },
+    {
+        name: 'Friends'
+    },
+    {
+        name: 'Game Randomizer'
+    }
+  ]
+
   const [game_data, setGameData] = useState(null)
   const [profileData, setProfileData] = useState(null) // State for profile
 
   const DEFAULT_STEAM_ID = '76561198118095520'
-  const [inputSteamId, setInputSteamId] = useState(DEFAULT_STEAM_ID)
-  const [activeSteamId, setActiveSteamId] = useState(DEFAULT_STEAM_ID)
+  const INITIAL_STEAM_ID = localStorage.getItem('lastSearchedSteamId') || DEFAULT_STEAM_ID
+  const [inputSteamId, setInputSteamId] = useState(INITIAL_STEAM_ID)
+  const [activeSteamId, setActiveSteamId] = useState(INITIAL_STEAM_ID)
+
+  const [current_tab, setCurrentTab] = useState(0)
+ 
 
   useEffect(() => {
     setGameData(null)
@@ -52,21 +72,36 @@ function App() {
     .catch(error => console.error('Error fetching profile:', error))
   }, [activeSteamId])
 
-  const handleSearch = () => setActiveSteamId(inputSteamId)
+  const handleSearch = () => {
+    localStorage.setItem('lastSearchedSteamId', inputSteamId)
+    setActiveSteamId(inputSteamId)
+  }
+
+  TABS[0].contents = 
+    <GamePlaytimeList 
+      data={game_data} 
+      inputSteamId={inputSteamId}
+      onInputChange={(e) => setInputSteamId(e.target.value)}
+      onSearch={handleSearch}
+    />
+
+    TABS[3].contents = <GameRandomizer inventory={game_data} />
+
+  
 
   return (
     <>
       <h1>Welcome to your gaming companion</h1>
-      
+      <NavBar 
+        onSelectTab={setCurrentTab}
+        tabs={TABS}
+      />
       {/* Show profile if data exists */}
       {profileData && <UserProfile profile={profileData} />}
 
-      <GamePlaytimeList 
-          data={game_data} 
-          inputSteamId={inputSteamId}
-          onInputChange={(e) => setInputSteamId(e.target.value)}
-          onSearch={handleSearch}
-      />
+      <main>
+        {TABS[current_tab].contents}
+      </main>
     </>
   )
 }

@@ -18,7 +18,10 @@ export default function GamePlaytimeList(props) {
 
     // This tracks the appid of the currently expanded card
     const [expandedId, setExpandedId] = useState(null);
-    const [current_sort_option, setCurrentSortOption] = useState(game_playtime_sort_options[0])
+    const [current_sort_option, setCurrentSortOption] = useState(() => {
+        const saved = localStorage.getItem('gameListSortMethod')
+        return game_playtime_sort_options.find(opt => opt.value === saved) || game_playtime_sort_options[0]
+    })
     
     const sortGames = (a, b, sortOrder) => {
         if (sortOrder === 'ascending') {
@@ -114,7 +117,11 @@ export default function GamePlaytimeList(props) {
         </div>
     );
 
-
+    // Update localStorage when sort changes
+    const handleSortChange = (newOption) => {
+        setCurrentSortOption(newOption)
+        localStorage.setItem('gameListSortMethod', newOption.value)
+    }
 
     return (
         <SortedList 
@@ -122,7 +129,7 @@ export default function GamePlaytimeList(props) {
             className="game-playtime-list"
             sortOptions={game_playtime_sort_options} 
             currentSortOption={current_sort_option}
-            onChangeSortOption={setCurrentSortOption}
+            onChangeSortOption={handleSortChange}
             renderItem={renderGameItem}
             extraControls={searchControls}
         />
