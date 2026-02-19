@@ -3,11 +3,14 @@ import './App.css'
 import GamePlaytimeList from './components/games/GamePlaytimeList'
 
 function App() {
-  const [data, setData] = useState(null)
+  const [game_data, setGameData] = useState(null)
+
+  const DEFAULT_STEAM_ID = '76561198118095520' // miget098
   
   // 1. New States for the Steam ID
-  const [inputSteamId, setInputSteamId] = useState('76561198118095520') // For the text box
-  const [activeSteamId, setActiveSteamId] = useState('76561198118095520') // The ID currently being fetched
+  const [inputSteamId, setInputSteamId] = useState(DEFAULT_STEAM_ID) // For the text box
+  const [activeSteamId, setActiveSteamId] = useState(DEFAULT_STEAM_ID) // The ID currently being fetched
+
 
   // 2. Add activeSteamId to the dependency array so it refetches when changed!
   useEffect(() => {
@@ -18,9 +21,9 @@ function App() {
     const format = 'json'
 
     // Clear old data to trigger the "Loading..." screen
-    setData(null)
+    setGameData(null)
 
-    // We clear out all the old Steam API URL stuff, and just ask our new backend!
+    // Clear out all the old Steam API URL stuff, and just ask the backend
     fetch(`/.netlify/functions/getGames?steamid=${activeSteamId}`)
       .then(response => {
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
@@ -29,7 +32,7 @@ function App() {
       .then(pulled_data => {
         // Catch empty/private profiles safely
         if (!pulled_data.response || !pulled_data.response.games) {
-            setData([]); 
+            setGameData([]); 
             return;
         }
 
@@ -51,13 +54,25 @@ function App() {
                 playtimeLinux: (game.playtime_linux_forever / 60).toFixed(1)
             })
         })
-        setData(game_data)
+        setGameData(game_data)
       })
       .catch(error => {
         console.error('Error fetching data:', error)
-        setData([]) // Fallback so it doesn't load forever
+        setGameData([]) // Fallback so it doesn't load forever
       })
-  }, [activeSteamId]) // <-- VERY IMPORTANT: Tells useEffect to run again when the ID changes
+
+    fetch(`/.netlify/functions/getProfile?steamid=${activeSteamId}`)
+    .then(response => {
+      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+      return response.json();
+    })
+    .then(profile_data => {
+      console.log("Profile data:", profile_data);
+    })
+    .catch(error => {
+      console.error('Error fetching profile data:', error);
+    })
+  }, [activeSteamId])
 
   // 3. Triggered when the user clicks the "Search" button
   const handleSearch = () => {
@@ -68,8 +83,7 @@ function App() {
     <>
       <h1>Welcome to your gaming companion</h1>
       <GamePlaytimeList 
-          data={data} 
-          // Pass our new state and functions down to the list
+          data={game_data} 
           inputSteamId={inputSteamId}
           onInputChange={(e) => setInputSteamId(e.target.value)}
           onSearch={handleSearch}

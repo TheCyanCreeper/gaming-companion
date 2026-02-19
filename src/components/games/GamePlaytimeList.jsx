@@ -104,6 +104,11 @@ export default function GamePlaytimeList(props) {
                 onChange={props.onInputChange} 
                 placeholder="Enter 64-bit Steam ID"
                 className="steam-id-input"
+                onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                        props.onSearch();
+                    }
+                }}
             />
             <button onClick={props.onSearch} className="steam-id-btn">Load Profile</button>
         </div>
