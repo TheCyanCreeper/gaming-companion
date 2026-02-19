@@ -21,7 +21,7 @@ function App() {
     setData(null)
 
     // We clear out all the old Steam API URL stuff, and just ask our new backend!
-    fetch(`/api/getGames?steamid=${activeSteamId}`)
+    fetch(`/.netlify/functions/getGames?steamid=${activeSteamId}`)
       .then(response => {
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         return response.json();
