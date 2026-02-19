@@ -8,8 +8,8 @@ export default function GamePlaytimeList(props) {
         {value: 'playtime', label: 'Playtime', comparator: (a, b) => b.playtime - a.playtime},
         {value: 'name', label: 'Name', comparator: (a, b) => a.name.localeCompare(b.name)},
         {value: 'lastPlayed', label: 'Last Played', comparator: (a, b) => {
-                if (a.lastPlayed === 'Never') return 1; // Treat "Never" as the oldest date
-                if (b.lastPlayed === 'Never') return -1; // Treat "Never" as the oldest date
+                if (a.lastPlayed === 'Never' || a.lastPlayed === 'Unknown') return 1; // Treat "Never" as the oldest date
+                if (b.lastPlayed === 'Never' || b.lastPlayed === 'Unknown') return -1; // Treat "Never" as the oldest date
                 return new Date(b.lastPlayed) - new Date(a.lastPlayed)
             }
         }

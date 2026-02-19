@@ -1,87 +1,66 @@
+// src/App.jsx
 import { useEffect, useState } from 'react'
 import './App.css'
 import GamePlaytimeList from './components/games/GamePlaytimeList'
+import UserProfile from './components/profile/UserProfile' // New component
 
 function App() {
   const [game_data, setGameData] = useState(null)
+  const [profileData, setProfileData] = useState(null) // State for profile
 
-  const DEFAULT_STEAM_ID = '76561198118095520' // miget098
-  
-  // 1. New States for the Steam ID
-  const [inputSteamId, setInputSteamId] = useState(DEFAULT_STEAM_ID) // For the text box
-  const [activeSteamId, setActiveSteamId] = useState(DEFAULT_STEAM_ID) // The ID currently being fetched
+  const DEFAULT_STEAM_ID = '76561198118095520'
+  const [inputSteamId, setInputSteamId] = useState(DEFAULT_STEAM_ID)
+  const [activeSteamId, setActiveSteamId] = useState(DEFAULT_STEAM_ID)
 
-
-  // 2. Add activeSteamId to the dependency array so it refetches when changed!
   useEffect(() => {
-    const interface_name = 'IPlayerService'
-    const method_name = 'GetOwnedGames'
-    const version = '0001'
-    const api_key = import.meta.env.VITE_STEAM_API_KEY
-    const format = 'json'
-
-    // Clear old data to trigger the "Loading..." screen
     setGameData(null)
+    setProfileData(null) // Reset profile on new search
 
-    // Clear out all the old Steam API URL stuff, and just ask the backend
+    // Fetch Games...
     fetch(`/.netlify/functions/getGames?steamid=${activeSteamId}`)
-      .then(response => {
-        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-        return response.json();
-      })
+      .then(response => response.json())
       .then(pulled_data => {
-        // Catch empty/private profiles safely
         if (!pulled_data.response || !pulled_data.response.games) {
             setGameData([]); 
             return;
         }
+        const formatted_games = pulled_data.response.games.map(game => {
+          let lastPlayedDate = game.rtime_last_played !== 0 
+            ? new Date(game.rtime_last_played * 1000).toLocaleDateString() 
+            : "Never"
+          if (lastPlayedDate === 'Invalid Date') lastPlayedDate = 'Unknown'
 
-        const game_data = [];
-        pulled_data.response.games.forEach(game => {
-            let lastPlayedString = "Never";
-            if (game.rtime_last_played !== 0) {
-                const dateObj = new Date(game.rtime_last_played * 1000);
-                lastPlayedString = dateObj.toLocaleDateString();
-            }
-
-            game_data.push({
-                appid: game.appid,
-                name: game.name, 
-                playtime: (game.playtime_forever / 60).toFixed(1),
-                lastPlayed: lastPlayedString,
-                playtimeWindows: (game.playtime_windows_forever / 60).toFixed(1),
-                playtimeMac: (game.playtime_mac_forever / 60).toFixed(1),
-                playtimeLinux: (game.playtime_linux_forever / 60).toFixed(1)
-            })
+          return {
+            appid: game.appid,
+            name: game.name, 
+            playtime: (game.playtime_forever / 60).toFixed(1),
+            lastPlayed: lastPlayedDate
+          }
         })
-        setGameData(game_data)
-      })
-      .catch(error => {
-        console.error('Error fetching data:', error)
-        setGameData([]) // Fallback so it doesn't load forever
+        setGameData(formatted_games)
       })
 
+    // Fetch Profile
     fetch(`/.netlify/functions/getProfile?steamid=${activeSteamId}`)
-    .then(response => {
-      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-      return response.json();
+    .then(response => response.json())
+    .then(data => {
+      // Steam returns players in an array
+      if (data.response && data.response.players && data.response.players.length > 0) {
+        setProfileData(data.response.players[0]);
+      }
     })
-    .then(profile_data => {
-      console.log("Profile data:", profile_data);
-    })
-    .catch(error => {
-      console.error('Error fetching profile data:', error);
-    })
+    .catch(error => console.error('Error fetching profile:', error))
   }, [activeSteamId])
 
-  // 3. Triggered when the user clicks the "Search" button
-  const handleSearch = () => {
-      setActiveSteamId(inputSteamId)
-  }
+  const handleSearch = () => setActiveSteamId(inputSteamId)
 
   return (
     <>
       <h1>Welcome to your gaming companion</h1>
+      
+      {/* Show profile if data exists */}
+      {profileData && <UserProfile profile={profileData} />}
+
       <GamePlaytimeList 
           data={game_data} 
           inputSteamId={inputSteamId}
