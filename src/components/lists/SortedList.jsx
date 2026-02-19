@@ -40,7 +40,11 @@ export default function SortedList(props) {
     return (
     <Panel className={class_name}>
         <div className="sorted-list-controls">
-            <SortMethodSelect value={props.currentSortOption.value} onChange={onChangeSortMethod} options={props.sortOptions.map(option => ({value: option.value, label: option.label}))} />
+            <SortMethodSelect value={props.sortOptions.value} onChange={onChangeSortMethod} options={props.sortOptions.map(option => ({value: option.value, label: option.label}))} />
+            
+            {/* The search bar gets injected right here! */}
+            {props.extraControls}
+            
             <SortOrderButton onClick={onChangeSortOrder} sortOrder={sort_order} />
         </div>
         <ul>

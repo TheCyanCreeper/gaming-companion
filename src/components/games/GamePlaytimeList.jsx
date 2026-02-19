@@ -96,6 +96,21 @@ export default function GamePlaytimeList(props) {
         )
     }
 
+    const searchControls = (
+        <div className="steam-id-search">
+            <input 
+                type="text" 
+                value={props.inputSteamId} 
+                onChange={props.onInputChange} 
+                placeholder="Enter 64-bit Steam ID"
+                className="steam-id-input"
+            />
+            <button onClick={props.onSearch} className="steam-id-btn">Load Profile</button>
+        </div>
+    );
+
+
+
     return (
         <SortedList 
             data={props.data} 
@@ -104,6 +119,7 @@ export default function GamePlaytimeList(props) {
             currentSortOption={current_sort_option}
             onChangeSortOption={setCurrentSortOption}
             renderItem={renderGameItem}
+            extraControls={searchControls}
         />
     )
 }
