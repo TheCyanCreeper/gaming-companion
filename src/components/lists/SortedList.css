@@ -1,0 +1,7 @@
+.sorted-list-controls {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+    margin-bottom: 16px;
+    gap: 12px;
+}

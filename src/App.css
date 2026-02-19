@@ -1,5 +1,6 @@
 #root {
-  max-width: 1280px;
+  max-width: 1600px; /* Increased from 1280px to give more breathing room */
+  width: 95%; /* Tells the app to take up most of the screen */
   margin: 0 auto;
   padding: 2rem;
   text-align: center;

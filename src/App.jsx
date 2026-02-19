@@ -22,10 +22,27 @@ function App() {
     fetch(`/steam-api/${interface_name}/${method_name}/v${version}/?key=${api_key}&steamid=${user_id}&format=${format}&include_appinfo=1&include_played_free_games=1`)
       .then(response => response.json())
       .then(pulled_data => {
-        // console.log(pulled_data)
-        const game_data = [];
+       const game_data = [];
         pulled_data.response.games.forEach(game => {
-            game_data.push({name: game.name, playtime: (game.playtime_forever / 60).toFixed(1)})
+            
+            // 1. Convert Steam's Unix timestamp into a readable date string
+            // We multiply by 1000 because JS works in milliseconds, but Steam sends seconds
+            let lastPlayedString = "Never";
+            if (game.rtime_last_played !== 0) {
+                const dateObj = new Date(game.rtime_last_played * 1000);
+                lastPlayedString = dateObj.toLocaleDateString(); // Formats it like "12/25/2023"
+            }
+
+            // 2. Push all our new stats into the array
+            game_data.push({
+                appid: game.appid,
+                name: game.name, 
+                playtime: (game.playtime_forever / 60).toFixed(1),
+                lastPlayed: lastPlayedString,
+                playtimeWindows: (game.playtime_windows_forever / 60).toFixed(1),
+                playtimeMac: (game.playtime_mac_forever / 60).toFixed(1),
+                playtimeLinux: (game.playtime_linux_forever / 60).toFixed(1)
+            })
         })
 
         setData(game_data)
@@ -48,10 +65,11 @@ function App() {
     //   })
   }, [])
 
+
   return (
     <>
       <h1>Welcome to your gaming companion</h1>
-      <GamePlaytimeList data={data} />
+      <GamePlaytimeList data={data}/>
     </>
   )
 }
