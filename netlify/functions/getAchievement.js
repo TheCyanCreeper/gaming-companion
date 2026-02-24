@@ -3,12 +3,14 @@
 export const handler = async (event) => {
     // 1. Grab the steamId from the query string
     const steamid = event.queryStringParameters.steamid;
+
+    const app_ids = event.queryStringParameters.appids;
     
     // 2. Safely grab our secret key from Netlify's environment
     const api_key = process.env.STEAM_API_KEY;
 
     // 3. Build the Steam URL
-    const url = `http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=${api_key}&steamid=${steamid}&format=json&include_appinfo=true&include_played_free_games=true&include_free_sub=true&include_extended_appinfo=true`;
+    const url = `https://api.steampowered.com/IPlayerService/GetAchievementsProgress/v1/?key=${api_key}&steamid=${steamid}&format=json${app_ids}&include_unvetted_apps=true`;
 
     try {
         const response = await fetch(url);

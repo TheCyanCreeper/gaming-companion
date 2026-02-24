@@ -8,7 +8,7 @@ export const handler = async (event) => {
     const api_key = process.env.STEAM_API_KEY;
 
     // 3. Build the Steam URL
-    const url = `http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=${api_key}&steamid=${steamid}&format=json&include_appinfo=true&include_played_free_games=true&include_free_sub=true&include_extended_appinfo=true`;
+    const url = `https://api.steampowered.com/IWishlistService/GetWishlist/v1/?key=${api_key}&steamid=${steamid}`;
 
     try {
         const response = await fetch(url);

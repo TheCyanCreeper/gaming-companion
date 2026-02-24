@@ -4,6 +4,7 @@ import GamePlaytimeList from './components/games/GamePlaytimeList'
 import UserProfile from './components/profile/UserProfile'
 import NavBar from './components/nav/NavBar'
 import GameRandomizer from './components/games/GameRandomizer'
+import AchievementRandomizer from './components/achievements/AchievementRandomizer'
 
 function App() {
   const TABS = [
@@ -44,6 +45,7 @@ function App() {
             setGameData([]); 
             return;
         }
+
         const formatted_games = pulled_data.response.games.map(game => {
           let lastPlayedDate = game.rtime_last_played !== 0 
             ? new Date(game.rtime_last_played * 1000).toLocaleDateString() 
@@ -70,6 +72,14 @@ function App() {
       }
     })
     .catch(error => console.error('Error fetching profile:', error))
+
+    // fetch(`/.netlify/functions/getTest?steamid=${activeSteamId}`)
+    // .then(response => response.json())
+    // .then(data => {
+    //   // Steam returns players in an array
+    //   console.log("Test data:", data)
+    // })
+    // .catch(error => console.error('Error fetching profile:', error))
   }, [activeSteamId])
 
   const handleSearch = () => {
@@ -85,13 +95,14 @@ function App() {
       onSearch={handleSearch}
     />
 
+    TABS[1].contents = <AchievementRandomizer activeSteamId={activeSteamId} games={game_data || []} />
+
     TABS[3].contents = <GameRandomizer inventory={game_data} />
 
   
 
   return (
     <>
-      <h1>Welcome to your gaming companion</h1>
       <NavBar 
         onSelectTab={setCurrentTab}
         tabs={TABS}
