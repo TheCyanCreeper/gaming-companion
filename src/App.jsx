@@ -5,22 +5,11 @@ import UserProfile from './components/profile/UserProfile'
 import NavBar from './components/nav/NavBar'
 import GameRandomizer from './components/games/GameRandomizer'
 import AchievementRandomizer from './components/achievements/AchievementRandomizer'
+import { createBrowserRouter, Outlet } from 'react-router-dom'
+import { RouterProvider } from 'react-router-dom'
+
 
 function App() {
-  const TABS = [
-    {
-        name: 'Inventory',
-    },
-    {
-        name: 'Achievements'
-    },
-    {
-        name: 'Friends'
-    },
-    {
-        name: 'Game Randomizer'
-    }
-  ]
 
   const [game_data, setGameData] = useState(null)
   const [profileData, setProfileData] = useState(null) // State for profile
@@ -82,38 +71,71 @@ function App() {
     // .catch(error => console.error('Error fetching profile:', error))
   }, [activeSteamId])
 
-  const handleSearch = () => {
+   const handleSearch = () => {
     localStorage.setItem('lastSearchedSteamId', inputSteamId)
     setActiveSteamId(inputSteamId)
   }
 
-  TABS[0].contents = 
-    <GamePlaytimeList 
-      data={game_data} 
-      inputSteamId={inputSteamId}
-      onInputChange={(e) => setInputSteamId(e.target.value)}
-      onSearch={handleSearch}
-    />
+  const Layout = () => {
+    return (<>
+      <NavBar onSelectTab={setCurrentTab} />
+      {profileData && <UserProfile profile={profileData} />}
+      <h1>Steam Companion</h1>
+      <main>
+        <Outlet />
+      </main>
+    </>
+    )
+  }
 
-    TABS[1].contents = <AchievementRandomizer activeSteamId={activeSteamId} games={game_data || []} />
+  const router = createBrowserRouter([
+    {
+    path: "/",
+    element: <Layout />,
+    children: [
+      {
+        path: "/",
+        element: 
+          <GamePlaytimeList 
+          data={game_data} 
+          inputSteamId={inputSteamId}
+          onInputChange={(e) => setInputSteamId(e.target.value)}
+          onSearch={handleSearch}
+          />
+      },
+      {
+        path: "/achievements",
+        element: <AchievementRandomizer activeSteamId={activeSteamId} games={game_data || []} />
+      },
+      // {
+      //   path: "/friends",
+      //   element: <FriendsList />
+      // },
+      {
+        path: "/game-randomizer",
+        element: <GameRandomizer inventory={game_data} />
+      }
+    ]
+    }
+  ])
 
-    TABS[3].contents = <GameRandomizer inventory={game_data} />
+ 
 
   
 
   return (
-    <>
-      <NavBar 
-        onSelectTab={setCurrentTab}
-        tabs={TABS}
-      />
-      {/* Show profile if data exists */}
-      {profileData && <UserProfile profile={profileData} />}
+    // <>
+    //   <NavBar 
+    //     onSelectTab={setCurrentTab}
+    //   />
+    //   {/* Show profile if data exists */}
+    //   {profileData && <UserProfile profile={profileData} />}
 
-      <main>
-        {TABS[current_tab].contents}
-      </main>
-    </>
+    //   <main>
+    //     {TABS[current_tab].contents}
+    //   </main>
+    // </>
+    <RouterProvider router={router} />
   )
 }
 

@@ -8,8 +8,8 @@ export default function GameRandomizer({inventory}) {
     const onSubmitHandler = (e) => {
         e.preventDefault();
         const formData = new FormData(e.target);
-        const includeFree = formData.get('free-games') === 'on';
-        const includeUnplayed = formData.get('unplayed-games') === 'on';
+        // const includeFree = formData.get('free-games') === 'on';
+        // const includeUnplayed = formData.get('unplayed-games') === 'on';
         const gameCount = parseInt(formData.get('game-count'), 10);
 
         let new_choosen_games = []
@@ -31,14 +31,22 @@ export default function GameRandomizer({inventory}) {
     return (
         <Panel>
             <h2>Game Randomizer</h2>
-            <form onSubmit={onSubmitHandler}>
-                <label htmlFor="free-games">Include Free Games</label>
-                <input type="checkbox" name="free-games" id="free-games" />
-                <label htmlFor="unplayed-games">Include Unplayed Games</label>
-                <input type="checkbox" name="unplayed-games" id="unplayed-games" />
-                <label htmlFor="game-count">Number of Games to Randomize</label>
-                <input type="number" name="game-count" id="game-count" min="1" max="1000" defaultValue="1" />
-                <button type="submit">Randomize!</button>
+            <form className="randomizer-options" onSubmit={onSubmitHandler}>
+                {/* <div>
+                    <label htmlFor="free-games">Include Free Games</label>
+                    <input type="checkbox" name="free-games" id="free-games" />
+                </div>
+                <div>
+                    <label htmlFor="unplayed-games">Include Unplayed Games</label>
+                    <input type="checkbox" name="unplayed-games" id="unplayed-games" />
+
+                </div> */}
+                <div>
+                    <label htmlFor="game-count">Number of Games to Randomize</label>
+                    <input type="number" name="game-count" id="game-count" min="1" max="1000" defaultValue="1" />
+                </div>
+
+                <button className="randomize-btn" type="submit">Randomize!</button>
             </form>
             {
                 choosen_games.length > 0 && (

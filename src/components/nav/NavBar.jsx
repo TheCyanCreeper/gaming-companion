@@ -1,5 +1,6 @@
 import Panel from '../ui/Panel';
 import './NavBar.css'
+import { Link, NavLink } from 'react-router-dom';
 
 const NavBar = ({ onSelectTab, tabs }) => {
 
@@ -8,11 +9,10 @@ const NavBar = ({ onSelectTab, tabs }) => {
       <div className="navbar-content">
         <h1 className="navbar-title">Steam Companion</h1>
         <Panel className="nav-tabs">
-            <ul>
-                {tabs.map((tab, index) => (
-                    <li key={tab.name} className="nav-tab" onClick={() => onSelectTab(index)}>{tab.name}</li>
-                ))}
-            </ul>
+            <NavLink to="/" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>Inventory</NavLink>
+            <NavLink to="/achievements" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>Achievements</NavLink>
+            {/* <NavLink to="/friends" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>Friends</NavLink> */}
+            <NavLink to="/game-randomizer" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>Game Randomizer</NavLink>
         </Panel>
       </div>
     </nav>
