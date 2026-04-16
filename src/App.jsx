@@ -45,7 +45,7 @@ function App() {
             setGameData([]); 
             return;
         }
-
+        console.log(pulled_data)
         const formatted_games = pulled_data.response.games.map(game => {
           let lastPlayedDate = game.rtime_last_played !== 0 
             ? new Date(game.rtime_last_played * 1000).toLocaleDateString() 
