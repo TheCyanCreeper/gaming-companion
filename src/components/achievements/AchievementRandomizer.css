@@ -1,7 +1,13 @@
 .achievement-container {
     padding: 20px;
     border-radius: 8px;
-    width:80%
+    width:80%;
+    
+}
+
+.achievement-randomizer {
+    background-color: #0E141B;
+    border-color: #21272E;
 }
 
 .randomized-achievements-list {
