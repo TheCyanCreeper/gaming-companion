@@ -1,11 +1,11 @@
 .randomized-games-list {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(min(100%, 400px), 1fr));
+    align-items: start;
     gap: 16px; 
     padding: 0;
     margin: 0; 
     list-style-type: none; 
-
     max-width: 1232px; 
 }
 

@@ -54,7 +54,7 @@ export default function GameRandomizer({inventory}) {
                         <h3>Randomized Games:</h3>
                         <ul className="randomized-games-list">
                             {choosen_games.map((game, index) => (
-                                <li key={index}><GameCard game={game} isExpanded={false} onCardClick={() => {}} imageUrl={`https://cdn.akamai.steamstatic.com/steam/apps/${game.appid}/header.jpg`} highlighted_stat={null} /></li>
+                                <li key={game.appid}><GameCard game={game} isExpanded={false} onCardClick={() => {}} imageUrl={`https://cdn.akamai.steamstatic.com/steam/apps/${game.appid}/header.jpg`} highlighted_stat={null} /></li>
                             ))}
                         </ul>
                     </div>

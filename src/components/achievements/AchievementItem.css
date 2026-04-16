@@ -1,0 +1,22 @@
+.achievement-item {
+    display:flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: flex-start;
+    padding: 0;
+    overflow: hidden;
+    
+}
+.achievement-icon {
+    width: 128px;
+    height: 128px;
+    margin-right: 16px;
+}
+.achievement-details {
+    width: 100%;
+    margin-left: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items:  center;
+}

@@ -1,18 +1,13 @@
-
-/* Individual Game Cards */
 .game-card {
     cursor: pointer;
     overflow: hidden; 
-    padding: 12px; /* Tighter padding for a smaller card */
+    padding: 12px;
 }
 
-/* Perfect Steam Banner Proportions */
 .game-banner {
-    /* calc() perfectly offsets the 12px padding we set above */
     width: calc(100% + 24px); 
     margin: -12px -12px 12px -12px; 
     
-    /* This forces the exact aspect ratio of a Steam Header image! */
     aspect-ratio: 460 / 215; 
     height: auto; 
     
@@ -25,7 +20,6 @@
     opacity: 0.8;
 }
 
-/* Slightly smaller text to fit the new card size */
 .game-title {
     font-size: 1rem;
     font-weight: 600;
@@ -44,7 +38,6 @@
     color: #646cff;
 }
 
-/* Expanded details section */
 .game-details-expanded {
     margin-top: 12px;
     animation: fadeIn 0.2s ease-in-out;
