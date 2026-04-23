@@ -9,15 +9,6 @@ export default function AchievementRandomizer(props) {
     const [choosen_achievements, setChoosenAchievements] = useState([]);
     const [activeAppId, setActiveAppId] = useState("");
 
-    if (!props.activeSteamId) {
-        return (
-        <div style={{ textAlign: 'center', marginTop: '50px' }}>
-            <h2>No Profile Loaded!</h2>
-            <p>Please sign in or search for a profile to view achievements.</p>
-        </div>
-        );
-    }
-
     useEffect(() => {
         if (!activeAppId) return;
 
@@ -49,18 +40,20 @@ export default function AchievementRandomizer(props) {
         e.preventDefault();
         const formData = new FormData(e.target);
         const achCount = parseInt(formData.get('achievement-count'), 10);
+        
+        const pool = [...validAchievements];
         const random_achievements = [];
+        const actualCount = Math.min(achCount, pool.length);
 
-        for (let i = 0; i < achCount; i++) {
-            const randomIndex = Math.floor(Math.random() * validAchievements.length);
-            random_achievements.push(validAchievements[randomIndex]);
+        for (let i = 0; i < actualCount; i++) {
+            const randomIndex = Math.floor(Math.random() * pool.length);
+            random_achievements.push(pool[randomIndex]);
+            pool.splice(randomIndex, 1);
         }
 
         setChoosenAchievements(random_achievements);
     };
 
-    // --- NEW SORTING LOGIC ---
-    // Create a sorted copy of the games array to keep it alphabetical
     const sortedGames = props.games 
         ? [...props.games].sort((a, b) => a.name.localeCompare(b.name)) 
         : [];
