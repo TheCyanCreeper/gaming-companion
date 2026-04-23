@@ -45,14 +45,13 @@
 .steam-id-search {
     display: flex;
     gap: 8px;
-    flex: 1; 
     justify-content: center;
-    margin-bottom: 20px;
+    align-items: center;
 }
 
 
 .steam-id-input {
-    padding: 10px 16px;
+    /* padding: 10px 16px; */
     border-radius: 8px;
     border: 1px solid #3d3d3d;
     background-color: #1a1a1a;
@@ -61,24 +60,28 @@
     max-width: 300px;
     font-size: 0.95rem;
     transition: border-color 0.2s ease;
+    width: 250px;
+    padding: 8px 12px;
 }
 
 .steam-id-input:focus {
     outline: none;
-    border-color: #646cff; /* Neon highlight when typing */
+    border-color: #646cff; 
 }
 
-/* The Load Button */
 .steam-id-btn {
-    padding: 10px 20px;
-    background-color: #2a475e; /* Steam Blue */
+    /* padding: 10px 20px; */
+    background-color: #2a475e;
     color: white;
     border: none;
     border-radius: 8px;
     cursor: pointer;
     font-weight: bold;
     transition: background-color 0.2s ease, transform 0.1s ease;
+     padding: 8px 16px;
+    white-space: nowrap; 
 }
+
 
 .steam-id-btn:hover {
     background-color: #66c0f4;
@@ -86,5 +89,136 @@
 }
 
 .steam-id-btn:active {
-    transform: scale(0.97); /* Satisfying click press effect */
+    transform: scale(0.97);
+}
+
+.login-options {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  margin: 20px 0;
+  flex-wrap: wrap;
+}
+
+.steam-login-btn {
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.steam-login-btn:hover {
+  transform: scale(1.05);
+}
+
+.login-divider {
+  font-weight: bold;
+  color: #888;
+}
+
+.steam-id-search {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.steam-id-input {
+  width: 250px;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.steam-id-btn {
+  padding: 8px 16px;
+  white-space: nowrap; 
+  cursor: pointer;
+}
+
+.tooltip-container {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: help;
+}
+
+.tooltip-icon {
+  background-color: #66c0f4;
+  color: #171a21;
+  border-radius: 50%;
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.tooltip-text {
+  visibility: hidden;
+  width: 280px;
+  background-color: #171a21;
+  color: #c7d5e0;
+  text-align: left;
+  border-radius: 6px;
+  padding: 12px;
+  position: absolute;
+  z-index: 10;
+  bottom: 130%;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.3s;
+  font-size: 13px;
+  line-height: 1.5;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+}
+
+.tooltip-text strong {
+  color: #fff;
+}
+
+.tooltip-text::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -6px;
+  border-width: 6px;
+  border-style: solid;
+  border-color: #171a21 transparent transparent transparent;
+}
+
+.tooltip-container:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}
+.logout-btn {
+  color: #cccccc;
+  margin-bottom: 20px;
+}
+
+.privacy-error {
+  background-color: #3d1a1a;
+  border: 1px solid #ff4d4d;
+  color: #ffcccc;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 600px;
+  margin: 20px auto;
+  text-align: left;
+}
+
+.privacy-error h3 {
+  margin-top: 0;
+  color: #ff4d4d;
+}
+
+.privacy-error ol {
+  margin-bottom: 0;
 }

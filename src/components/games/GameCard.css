@@ -1,7 +1,7 @@
 .game-card {
     cursor: pointer;
     overflow: hidden; 
-    padding: 12px;
+    padding: 12px !important;
 }
 
 .game-banner {

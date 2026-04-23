@@ -6,7 +6,7 @@
     padding: 0;
     margin: 0; 
     list-style-type: none; 
-    max-width: 1232px; 
+    width: 100%;
 }
 
 .randomized-games-list:has(> :only-child) {

@@ -9,6 +9,15 @@ export default function AchievementRandomizer(props) {
     const [choosen_achievements, setChoosenAchievements] = useState([]);
     const [activeAppId, setActiveAppId] = useState("");
 
+    if (!props.activeSteamId) {
+        return (
+        <div style={{ textAlign: 'center', marginTop: '50px' }}>
+            <h2>No Profile Loaded!</h2>
+            <p>Please sign in or search for a profile to view achievements.</p>
+        </div>
+        );
+    }
+
     useEffect(() => {
         if (!activeAppId) return;
 
