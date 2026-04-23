@@ -61,23 +61,23 @@ export default function GamePlaytimeList(props) {
         )
     }
 
-    const searchControls = (
-        <div className="steam-id-search">
-            <input 
-                type="text" 
-                value={props.inputSteamId} 
-                onChange={props.onInputChange} 
-                placeholder="Enter 64-bit Steam ID"
-                className="steam-id-input"
-                onKeyDown={(e) => {
-                    if (e.key === 'Enter') {
-                        props.onSearch();
-                    }
-                }}
-            />
-            <button onClick={props.onSearch} className="steam-id-btn">Load Profile</button>
-        </div>
-    );
+    // const searchControls = (
+    //     <div className="steam-id-search">
+    //         <input 
+    //             type="text" 
+    //             value={props.inputSteamId} 
+    //             onChange={props.onInputChange} 
+    //             placeholder="Enter 64-bit Steam ID"
+    //             className="steam-id-input"
+    //             onKeyDown={(e) => {
+    //                 if (e.key === 'Enter') {
+    //                     props.onSearch();
+    //                 }
+    //             }}
+    //         />
+    //         <button onClick={props.onSearch} className="steam-id-btn">Load Profile</button>
+    //     </div>
+    // );
 
     // Update localStorage when sort changes
     const handleSortChange = (newOption) => {
@@ -93,7 +93,7 @@ export default function GamePlaytimeList(props) {
             currentSortOption={current_sort_option}
             onChangeSortOption={handleSortChange}
             renderItem={renderGameItem}
-            extraControls={searchControls}
+            // extraControls={searchControls}
         />
     )
 }
